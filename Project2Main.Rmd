@@ -1,5 +1,5 @@
 ---
-title: 'Project 2: New Orleans'
+title: 'The People, Places, and Storms of New Orleans'
 author: "Sean Connin, Daniel Moscoe, Ethan Haley"
 date: "3/14/2021"
 output:
@@ -33,9 +33,7 @@ on project goals, development, and results. Regular asynchronous exchanges via
 Slack also enabled us to provide each other assistance and updates during interim
 periods. Data and associated graphics were prepared in the RStudio work 
 environment - with raw data, R scripts, and related materials hosted on a shared
-Github repository. This repository can be accessed at https://ebhtra/gumbo-jazz. 
-
-[repository files]
+Github repository. The repository can be accessed [on Github](https://github.com/ebhtra/gumbo-jazz). 
 
 
 This report is organized into one section for each of the three datasets. 
@@ -58,10 +56,10 @@ library(magrittr)
 library(ggplot2)
 library(corrplot)
 library(kableExtra)
+#install.packages("latex2exp")
+library(latex2exp)
 ```
 
-
-## 1. Wikipedia: Overview
 
 In this section we explored patterns of recorded hurricane activity from 1900 -to- present in the Atlantic Ocean, Gulf of Mexico and Caribbean Sea. Our goal was to address the following questions:
 
@@ -158,8 +156,8 @@ ace%>%ggplot(aes(x = Year, y = Accumulated_Cyclone_Energy))+
     theme_bw()+
     theme(axis.title.x = element_text(size=11))+
     theme(axis.title.y = element_text(size=11))+
-    labs(y="ACE (sq_kn)", x = "Year", title = "Figure 2. Annual Accumulated Energy of
-    Atlantic Storms Since 1900", subtitle = "Reported in Squared Knots (s_kn)")+
+    labs(y=TeX("ACE ($kn^{2}$)"), x = "Year", title = "Figure 2. Annual Accumulated Energy of
+    Atlantic Storms Since 1900", subtitle = TeX("Reported in Squared Knots ($kn^{2}$)"))+
     theme(plot.title = element_text(hjust = 0.5))+
     theme(plot.subtitle=element_text(size=11, hjust=0.5,
     color="black"))
@@ -170,8 +168,8 @@ ace_death%>%ggplot(aes(Accumulated_Cyclone_Energy, Min_Known_Deaths))+
     theme_bw()+
     theme(axis.title.x = element_text(size=10))+
     theme(axis.title.y = element_text(size=10))+
-    labs(y="Documented Deaths (Minimum Count)", x = "Accumulated
-    Cyclone Energy (s_kn)", title = "Figure 2. Storm Related Deaths vs. Cumulative Storm
+    labs(y="Documented Deaths (Minimum Count)", x = TeX("Accumulated
+    Cyclone Energy ($kn^{2}$)"), title = "Figure 2. Storm Related Deaths vs. Cumulative Storm
     Intensity: 1900 to Present")+
     theme(plot.title = element_text(hjust = 0.5))
 # Compare total storm damage vs. accumulated storm energy by year
@@ -181,8 +179,8 @@ ace_damage%>%ggplot(aes(Accumulated_Cyclone_Energy, Damage_USD))+
     theme_bw()+
     theme(axis.title.x = element_text(size=10))+
     theme(axis.title.y = element_text(size=10))+
-    labs(y="Storm Damage (USD)", x = "Accumulated
-    Cyclone Energy (s_kn)", title = "Figure 3. Total Storm Damage vs. Cumulative Storm
+    labs(y="Storm Damage (USD)", x = TeX("Accumulated
+    Cyclone Energy ($kn^{2}$)"), title = "Figure 3. Total Storm Damage vs. Cumulative Storm
     Intensity: 1900 to Present")+
     theme(plot.title = element_text(hjust = 0.5))
 ```
@@ -200,7 +198,7 @@ Our analyses can be refined/improved through additional data collection and docu
 
 For information regarding ACE measurements and categories, please refer to the following websites:
 
-1. National Weather Service Climate Predication Center: https://www.cpc.ncep.noaa.gov/products/outlooks/Background.html
+1. National Weather Service Climate Prediction Center: https://www.cpc.ncep.noaa.gov/products/outlooks/Background.html
 
 2. Saffir Simpson Scale: https://bit.ly/3cvRIep  
 
@@ -209,7 +207,6 @@ For information regarding ACE measurements and categories, please refer to the f
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(tidyverse)
 library(readxl)
 xlsx_src <- "./New Orleans Who Lives data tables.xlsx"
 csv_dest <- "parishesCombined.csv"
@@ -394,7 +391,7 @@ S1A108 <- remove_rownames(S1A108)
 S1A108[2:length(S1A108[1,])] <- sapply(S1A108[2:length(S1A108[1,])], as.numeric)
 ```
 
-Now that each table conforms to a tidy format, each variable name is used consistently whenever it appears across tables, and each observation is led by a parish and a year in the first two columns, we are ready to join the tables. Since we don't want to lose any information, we use `full_join` on `parish` and `year` on one table after the other. The result is a large table containing all the information, called `combined`. The dataframe `combined` is then exported to a `csv` [file](https://raw.githubusercontent.com/sconnin/New_Orleans_Demographics/466abeb2b61d435b1982d23a51b86284e70890db/combined.csv). The path for this file is stored as `csv_dest`. 
+Now that each table conforms to a tidy format, each variable name is used consistently whenever it appears across tables, and each observation is led by a parish and a year in the first two columns, we are ready to join the tables. Since we don't want to lose any information, we use `full_join` on `parish` and `year` on one table after the other. The result is a large table containing all the information, called `combined`. The dataframe `combined` is then exported to a `csv` [file](https://raw.githubusercontent.com/ebhtra/gumbo-jazz/parishesCombined.csv). The path for this file is stored as `csv_dest`. 
 
 ```{r}
 combined <- 
@@ -443,7 +440,7 @@ By contrast, the number of African Americans in Orleans Parish has declined sign
 
 #### Source for Part 2: 
 
-The Excel file analyzed in this section is available [here](https://github.com/sconnin/New_Orleans_Demographics/blob/main/New%20Orleans%20Who%20Lives%20data%20tables.xlsx?raw=true). This file was provided by [The Data Center](https://www.datacenterresearch.org/data-resources/who-lives-in-new-orleans-now/) in response to a request.
+The Excel file analyzed in this section is available [here](https://github.com/ebhtra/gumbo-jazz/blob/main/New%20Orleans%20Who%20Lives%20data%20tables.xlsx?raw=true). This file was provided by [The Data Center](https://www.datacenterresearch.org/data-resources/who-lives-in-new-orleans-now/) in response to a request.
 
 
 # Part 3) GeoJSON Files  
@@ -452,7 +449,6 @@ The Excel file analyzed in this section is available [here](https://github.com/s
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
 library(stringr)
-library(tidyverse)
 ```
 
 #### Procedure Overview
@@ -662,6 +658,17 @@ able to provide some meaningful context to the city and the story of how it has
 changed due to Hurricane Katrina. Gathering this data together in a single format
 made it more accessible for analysis. This work also serves as an example for 
 future work in R with GeoJSON, HTML, and Excel datasets.
+
+We drew several key observations from working together on this project.
+They include the following:  
+
+1) Well framed research questions enabled us to effectively locate and extract 
+data from relevant sources. Even so, variations in data quality and provenance 
+remain an issue, particularly when information is curated by the public (e.g., Wikipedia).
+2) Regular synchronous and asynchronous meetings among team members allowed for
+efficient workflows and benchmarks.
+3) Further efficiencies may be achieved by establishing a report template/format
+and file nomenclature at the start of a project.
 
 We expect that investigating complex systems, like a changing city, will almost
 always require gathering together datasets initially designed with other purposes
